@@ -1,7 +1,7 @@
 import random
 
 
-class participant:
+class Participant:
     def __init__(self, name):
         self.name = name
         self.votes = None
@@ -18,24 +18,24 @@ class participant:
         print(f"{self.name} abort done")
 
 
-class coordinate:
+class Coordinate:
     def __init__(self, participants):
         self.participants = participants
 
     def send_prepare(self):
         votes = []
-        for p in self.participants:
-            vote = p.vote()
+        for participant in self.participants:
+            vote = participant.vote()
             votes.append(vote)
         return votes
 
     def send_commit(self):
-        for p in self.participants:
-            p.commit()
+        for participant in self.participants:
+            participant.commit()
 
     def send_abort(self):
-        for p in self.participants:
-            p.abort()
+        for participant in self.participants:
+            participant.abort()
 
     def two_phase_commit(self):
         votes = self.send_prepare()
@@ -45,15 +45,15 @@ class coordinate:
             self.send_commit()
 
         else:
-            print("all vote is not commit proply")
+            print("all vote is not commit properly")
             self.send_abort()
 
 
 def test_function():
-    p = [participant(f"participant {i}") for i in range(5)]
-    c = coordinate(p)
+    participant_list = [Participant(f"participant {i}") for i in range(5)]
+    coordinate_obj = Coordinate(participant_list)
 
-    c.two_phase_commit()
+    coordinate_obj.two_phase_commit()
 
 
 if __name__ == '__main__':
